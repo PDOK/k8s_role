@@ -11,3 +11,6 @@
 - name: Apply objects
   k8s:
     resource_definition: "{{ objects | map(attribute='object') | list }}"
+    validate:
+      fail_on_error: true
+      strict: true
