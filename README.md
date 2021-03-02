@@ -1,3 +1,6 @@
+[![GitHub license](https://img.shields.io/github/license/Shalucik/k8s_role)](https://github.com/Shalucik/k8s_role/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/Shalucik/k8s_role.svg)](https://github.com/Shalucik/k8s_role/releases)
+
 # k8s_role
 
 This role validates, applies and deletes objects to a kubernetes cluster.
@@ -25,7 +28,3 @@ If no state is specified, it is defaulted to present.
           - object: "{{ deployment }}"
           - object: "{{ server }}"
             state: absent
-
-## License
-
-MIT
