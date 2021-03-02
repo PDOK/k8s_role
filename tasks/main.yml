@@ -5,3 +5,5 @@
   debug:
     msg: "Applying {{ item.object.metadata.name }}"
   loop: "{{ objects }}"
+  loop_control:
+    label: "{{ item.object.metadata.name }}"
