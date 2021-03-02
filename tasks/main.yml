@@ -27,7 +27,7 @@
 
 - name: Log objects to remove
   debug:
-    msg: "Applying {{ item.metadata.name }}"
+    msg: "Removing {{ item.metadata.name }}"
   loop: "{{ absent_objects }}"
   loop_control:
     label: "{{ item.metadata.name }}"
