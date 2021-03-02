@@ -4,3 +4,4 @@
 - name: Log name
   debug:
     msg: "Applying {{ item.object.metadata.name }}"
+  loop: "{{ objects }}"
