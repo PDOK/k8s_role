@@ -1,5 +1,6 @@
 ---
 # tasks file for Atom
 
-- debug:
-    msg: new
+- name: Log name
+  debug:
+    msg: "Applying {{ item.object.metadata.name }}"
