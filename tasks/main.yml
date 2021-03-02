@@ -23,6 +23,7 @@
     validate:
       fail_on_error: true
       strict: true
+  when: present_objects | length > 0
 
 - name: Log objects to remove
   debug:
@@ -38,3 +39,4 @@
     validate:
       fail_on_error: true
       strict: true
+  when: absent_objects | length > 0
