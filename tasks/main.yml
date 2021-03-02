@@ -10,4 +10,4 @@
 
 - name: Apply objects
   k8s:
-    resource_definition: "{{ objects }}"
+    resource_definition: "{{ objects | map(attribute='object') | list }}"
