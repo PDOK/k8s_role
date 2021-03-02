@@ -1,9 +1,13 @@
 ---
 # tasks file for Atom
 
-- name: Log name
+- name: Log object names
   debug:
     msg: "Applying {{ item.object.metadata.name }}"
   loop: "{{ objects }}"
   loop_control:
     label: "{{ item.object.metadata.name }}"
+
+- name: Apply objects
+  k8s:
+    resource_definition: "{{ objects }}"
