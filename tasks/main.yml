@@ -1,6 +1,4 @@
 ---
-# tasks file for Atom
-
 - name: Split present and absent objects
   set_fact:
     present_objects: "{{ (objects | selectattr('state', 'undefined') | list +
