@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: PDOK
-  description: Role to generically apply kubernetes objects to a cluster
+  description: Role to apply and remove kubernetes objects to a cluster
   company: PDOK
 
   license: license (MIT)
