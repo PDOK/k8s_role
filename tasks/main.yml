@@ -7,21 +7,41 @@
     absent_objects: "{{ objects | selectattr('state', 'defined') | selectattr('state', 'equalto', 'absent') | list |
                         map(attribute='object')| list }}"
 
-- name: Log objects to apply
+- name: Split objects into to be created and to be applied
+  set_fact:
+    present_create_objects: "{{ present_objects | selectattr('kind', 'equalto', 'ConfigMap') | list }}"
+    present_apply_objects: "{{ present_objects | rejectattr('kind', 'equalto', 'ConfigMap') | list }}"
+
+- name: Log objects to create
   debug:
-    msg: "Applying {{ item.metadata.name }}"
-  loop: "{{ present_objects }}"
+    msg: "Creating {{ item.metadata.name }}"
+  loop: "{{ present_create_objects }}"
   loop_control:
     label: "{{ item.metadata.name }}"
 
-- name: Apply objects
+- name: Create resources
   k8s:
-    apply: true
-    resource_definition: "{{ present_objects }}"
+    resource_definition: "{{ present_create_objects }}"
     validate:
       fail_on_error: true
       strict: true
-  when: present_objects | length > 0
+  when: present_create_objects | length > 0
+
+- name: Log objects to apply
+  debug:
+    msg: "Applying {{ item.metadata.name }}, {{ item.kind }}"
+  loop: "{{ present_apply_objects }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"
+
+- name: Apply other resources
+  k8s:
+    apply: true
+    resource_definition: "{{ present_apply_objects }}"
+    validate:
+      fail_on_error: true
+      strict: true
+  when: present_apply_objects | length > 0
 
 - name: Log objects to remove
   debug:
