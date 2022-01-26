@@ -9,23 +9,11 @@
 
 - name: Split objects into to be created and to be applied
   set_fact:
-    present_create_objects: "{{ present_objects | selectattr('kind', 'equalto', 'ConfigMap') | list }}"
+    present_create_configmaps: "{{ present_objects | selectattr('kind', 'equalto', 'ConfigMap') | list }}"
     present_apply_objects: "{{ present_objects | rejectattr('kind', 'equalto', 'ConfigMap') | list }}"
 
-- name: Log objects to create
-  debug:
-    msg: "Creating {{ item.metadata.name }}"
-  loop: "{{ present_create_objects }}"
-  loop_control:
-    label: "{{ item.metadata.name }}"
-
-- name: Create resources
-  k8s:
-    resource_definition: "{{ present_create_objects }}"
-    validate:
-      fail_on_error: true
-      strict: true
-  when: present_create_objects | length > 0
+- include_tasks: create_configmap.yml
+  loop: "{{ present_create_configmaps }}"
 
 - name: Log objects to apply
   debug:
