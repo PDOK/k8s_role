@@ -1,0 +1,23 @@
+- name: Find existing Configmap
+  k8s_info:
+    api_version: v1
+    kind: ConfigMap
+    name: "{{ item.metadata.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: existing_configmap
+
+- debug:
+    msg: "Creating Configmap {{ item.metadata.name }}, {{ item.kind }}"
+  when: existing_configmap.resources | length == 0
+
+- name: Create non existing ConfigMap
+  k8s:
+    resource_definition: "{{ item }}"
+    validate:
+      fail_on_error: true
+      strict: true
+  when: existing_configmap.resources | length == 0
+
+- debug:
+    msg: "Skip creation of existing ConfigMap {{ item.metadata.name }}, {{ item.kind }}"
+  when: existing_configmap.resources | length > 0
